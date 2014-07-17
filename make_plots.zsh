@@ -1,3 +1,3 @@
 #!/usr/bin/env zsh
 
-root.exe -b -q make_plots.cc
+root.exe -l -b -q make_plots.cc

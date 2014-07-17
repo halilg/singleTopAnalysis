@@ -457,7 +457,13 @@ int main(int argc, char **argv){
     
     TFile E("TChannel-ele-histo.root","recreate");
     TH1D h_topMass("h_topMass","Top Mass; Mass (GeV); Events", 50, 100, 250);
-    
+    TH1D h_leptonPt("h_leptonPt","; PT(GeV); Events", 50, 0, 250);
+    TH1D h_leptonEta("h_leptonEta","; eta; Events", 50, 0, 6);
+    TH1D h_leptonPhi("h_leptonPhi","; phi; Events", 50, -3.14, 3.14);
+    //TH1D h_("h_","; (GeV); Events", 50, 100, 250);
+    TH1D h_fJetEta("h_fJetEta","f Jet eta; eta; Events", 50, 0, 6);
+    TH1D h_bJetEta("h_bJetEta","title;x;y",50,0,6);
+
     // Set branch addresses.   
    {
         TChannel_2J_1T_noSyst->SetBranchAddress("eta",&eta);
@@ -906,6 +912,11 @@ int main(int argc, char **argv){
    for (Long64_t i=0; i<nentries;i++) {
         TChannel_2J_1T_noSyst->GetEntry(i);
         h_topMass.Fill(topMass);
+        h_leptonPt.Fill(leptonPt);
+        h_leptonEta.Fill(leptonEta);
+        h_leptonPhi.Fill(leptonPhi);
+        h_fJetEta.Fill(fJetEta);
+        h_bJetEta.Fill(bJetEta);
    }
     cout << "Analyzed " << nentries << " entries\n";
     T.Close();
