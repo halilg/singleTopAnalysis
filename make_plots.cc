@@ -1,5 +1,10 @@
-{
-	TFile T("TChannel-ele-histo.root");
+void make_plots(char * ifname){
+	TFile T(ifname);
+	if (! T.IsOpen() ){
+		cout << "Couldn't open file: " << ifname << endl;
+		return;
+	}
+	
 	TIter nextkey(T.GetListOfKeys());
 	TKey *key;
 	TObject *obj;
@@ -16,10 +21,5 @@
 		}
 		delete obj;
 	}
-	/*
-	TH1D* h_topMass = T.Get("h_topMass");
-	
-	h_topMass->Draw();
-	c.Print("h_topMass.pdf");
-	*/
+
 }
