@@ -95,3 +95,9 @@ int main(int argc, char **argv){
     E.Close();
     return 0;
 }
+
+/*
+ *store number in root file:
+ *http://root.cern.ch/phpBB3/viewtopic.php?f=3&t=11341
+ *
+ */

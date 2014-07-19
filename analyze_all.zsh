@@ -20,16 +20,11 @@
 #    ZJets.root
 #    ZZ.root  */
 
-EVENTS=-1
+EVENTS=10000
 FPATH=~/eos/cms/store/group/phys_top/SingleTop/Trees/MC
-#FROOT_I=TTBar.root
-#FROOT_I=TChannel.root
-FROOT_I=WJets.root
+FROOT_I=TTBar.root
 RDIR=TreesEle
-#RDIR=TreesMu
-#RTREE=TTBar_2J_1T_noSyst
-#RTREE=TChannel_2J_1T_noSyst
-RTREE=WJets_2J_1T_noSyst
+RTREE=TTBar_2J_1T_noSyst
 FROOT_O=h-${RTREE}-${RDIR}-$FROOT_I
 echo $FROOT_O
 
