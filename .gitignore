@@ -38,3 +38,8 @@ Thumbs.db
 
 # data file location
 data
+
+#other
+*.json
+*.root
+stanalysis
