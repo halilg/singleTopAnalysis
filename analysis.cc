@@ -7,6 +7,7 @@
 #include "TH1I.h"
 #include "analysis.h"
 #include <algorithm>
+#include <json/json.h>
 
 using namespace std;
 int main(int argc, char **argv){
@@ -14,7 +15,7 @@ int main(int argc, char **argv){
     
     if (argc < 6){
         // Tell the user how to run the program
-        std::cerr << "Usage: " << argv[0] << " <iroot file> <oroot file> <TDirectory> <TTree>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <events> <iroot file> <oroot file> <TDirectory> <TTree>" << std::endl;
         return 1;
     }
     Long64_t nevents = std::atoll(argv[1]);
@@ -37,14 +38,14 @@ int main(int argc, char **argv){
     TString treeName;
     treeName=tdir+"/"+ttree;
     cout << "Accessing tree: " << treeName << endl;
-    TTree* TChannel_2J_1T_noSyst = (TTree*)T.Get(treeName);
+    TTree* myTree = (TTree*)T.Get(treeName);
     
-    Long64_t nentries = TChannel_2J_1T_noSyst->GetEntries();
+    Long64_t nentries = myTree->GetEntries();
     cout << "Entries in ROOT tree: " << nentries << endl;
     
     // Create the output ROOT file and book the histograms
     TFile E(orfile,"recreate");
-    TH1D h_metPt("h_metPt","ET; ET (GeV); Events", 50, 0, 250);
+    TH1D h_metPt("h_metPt","MET; MET (GeV); Events", 50, 0, 250);
     TH1D h_topMass("h_topMass","Top Mass; Mass(GeV); Events", 50, 100, 250);
     TH1D h_leptonPt("h_leptonPt","; PT(GeV); Events", 50, 0, 250);
     TH1D h_leptonEta("h_leptonEta","; eta; Events", 50, 0, 6);
@@ -56,25 +57,27 @@ int main(int argc, char **argv){
     TH1D h_Mlb1("h_Mlb1","b1b2Mass; (GeV); Events", 50, 100, 250);
     TH1D h_Mlb2("h_Mlb2","b1b2Mass; (GeV); Events", 50, 100, 250);
     TH1D h_b1b2Mass("h_b1b2Mass","b1b2Mass; (GeV); Events", 50, 100, 250);
-    
-   
-   
-    
-    
+    TH1D h_leptonDeltaCorrectedRelIso("h_leptonDeltaCorrectedRelIso","leptonRhoCorrectedRelIso; I; Events", 50, 0, 1);
+    TH1D h_leptonRhoCorrectedRelIso("h_leptonRhoCorrectedRelIso","leptonRhoCorrectedRelIso; I; Events", 50, 0, 1);
+    TH1I nVertices("h_nVertices"," nVertices ; Vertices ; Events", 51, 0, 50);//("h_","; ; Events", 50, 100, 250);
+    TH1I nGoodVertices("h_nGoodVertices"," nGoodVertices ; Vertices ; Events", 51, 0, 50);//("h_","; ; Events", 50, 100, 250);
     
     cout << "Histograms created\n";
     
     // Set branch addresses.   
-    myevent.register_branches(TChannel_2J_1T_noSyst);
+    myevent.register_branches(myTree);
     cout << "Branches set\n";
     
     Long64_t i;
     //cout << nevents << "-" << nentries << "-" << std::min(nevents,nentries) << endl;
     nevents= (nevents < nentries) ? nevents : nentries; // std::min(nevents,nentries);
+    if (nevents == -1) nevents = nentries;
     cout << "Will analyze " << nevents << " events\n 1000X:";
     for (i=1; i<nevents+1;i++) {
         if (i % 1000 == 0) cout << "+" << std::flush;
-        TChannel_2J_1T_noSyst->GetEntry(i);
+        myTree->GetEntry(i);
+        nVertices.Fill(myevent.nVertices);
+        nGoodVertices.Fill(myevent.nGoodVertices);
         h_topMass.Fill(myevent.topMass);
         h_leptonPt.Fill(myevent.leptonPt);
         h_leptonEta.Fill(myevent.leptonEta);
@@ -86,7 +89,9 @@ int main(int argc, char **argv){
         h_Mlb1.Fill(myevent.Mlb1);
         h_Mlb2.Fill(myevent.Mlb2);
         h_b1b2Mass.Fill(myevent.b1b2Mass);
-
+        h_leptonRhoCorrectedRelIso.Fill(myevent.leptonRhoCorrectedRelIso);
+        h_leptonDeltaCorrectedRelIso.Fill(myevent.leptonDeltaCorrectedRelIso);
+        
    }
     cout << "\nAnalyzed " << i-1<< " entries\n";
     cout << "histograms written to: " << orfile << endl;

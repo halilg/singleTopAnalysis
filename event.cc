@@ -150,7 +150,7 @@ void Event::register_branches(TTree* myTree){
         myTree->SetBranchAddress("totalMomentum",&totalMomentum);
         myTree->SetBranchAddress("lowBTag",&lowBTag);
         myTree->SetBranchAddress("highBTag",&highBTag);
-        myTree->SetBranchAddress("MCTop_1_Pt",&MCTop_1_Pt);
+        /*myTree->SetBranchAddress("MCTop_1_Pt",&MCTop_1_Pt);
         myTree->SetBranchAddress("MCTop_1_Phi",&MCTop_1_Phi);
         myTree->SetBranchAddress("MCTop_1_Eta",&MCTop_1_Eta);
         myTree->SetBranchAddress("MCTop_1_E",&MCTop_1_E);
@@ -378,7 +378,7 @@ void Event::register_branches(TTree* myTree){
         myTree->SetBranchAddress("MCNeutrino_4_Eta",&MCNeutrino_4_Eta);
         myTree->SetBranchAddress("MCNeutrino_4_E",&MCNeutrino_4_E);
         myTree->SetBranchAddress("MCNeutrino_4_PdgId",&MCNeutrino_4_PdgId);
-        myTree->SetBranchAddress("MCNeutrino_4_MotherId",&MCNeutrino_4_MotherId);
+        myTree->SetBranchAddress("MCNeutrino_4_MotherId",&MCNeutrino_4_MotherId);*/
         myTree->SetBranchAddress("PDFWeight1",&PDFWeight1);
         myTree->SetBranchAddress("PDFWeight2",&PDFWeight2);
         myTree->SetBranchAddress("PDFWeight3",&PDFWeight3);

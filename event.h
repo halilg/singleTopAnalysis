@@ -149,7 +149,7 @@ class Event{
    Double_t        totalMomentum;
    Double_t        lowBTag;
    Double_t        highBTag;
-   Float_t         MCTop_1_Pt;
+   /*Float_t         MCTop_1_Pt;
    Float_t         MCTop_1_Phi;
    Float_t         MCTop_1_Eta;
    Float_t         MCTop_1_E;
@@ -377,7 +377,7 @@ class Event{
    Float_t         MCNeutrino_4_Eta;
    Float_t         MCNeutrino_4_E;
    Float_t         MCNeutrino_4_PdgId;
-   Float_t         MCNeutrino_4_MotherId;
+   Float_t         MCNeutrino_4_MotherId;*/
    Float_t         PDFWeight1;
    Float_t         PDFWeight2;
    Float_t         PDFWeight3;
