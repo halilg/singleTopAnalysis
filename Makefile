@@ -10,6 +10,8 @@ LOTHER= #-lboost_system
 
 default: analysis.exe
 
+all: analysis.exe jsoncpp_cheat.exe
+
 jsoncpp.o: jsoncpp.cpp json/json-forwards.h json/json.h
 	$(CPP) -c jsoncpp.cpp $(CPPFLAGS) -o $@
 
