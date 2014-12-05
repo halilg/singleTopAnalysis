@@ -21,20 +21,24 @@
 #    ZZ.root  */
 
 EVENTS=-1
-FPATH=~/eos/cms/store/group/phys_top/SingleTop/Trees/MC
-#FROOT_I=TTBar.root
-#FROOT_I=TChannel.root
-FROOT_I=WJets.root
-RDIR=TreesEle
+FPATH=. #/eos/cms/store/group/phys_top/SingleTop/Trees/MC
+FROOT_I=test.root
+RDIR=/ #TreesEle
 #RDIR=TreesMu
 #RTREE=TTBar_2J_1T_noSyst
 #RTREE=TChannel_2J_1T_noSyst
-RTREE=WJets_2J_1T_noSyst
-FROOT_O=h-${RTREE}-${RDIR}-$FROOT_I
+RTREE=TChannel_2J_1T_noSyst
+
+if [[ ${RDIR} == / ]]; then
+    FROOT_O=h-${RTREE}-$FROOT_I
+else
+    FROOT_O=h-${RTREE}-${RDIR}-$FROOT_I
+fi
+
 echo $FROOT_O
 
 if [[ $1 != "-na" ]]; then
-    ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE 
+    ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE ${FROOT_I}.json
 fi
 
 if [[ $1 != "-np" ]]; then

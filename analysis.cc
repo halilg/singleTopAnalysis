@@ -1,4 +1,5 @@
-# include <iostream>
+#include <iostream>
+#include <fstream>
 #include "TFile.h"
 #include "TTree.h"
 #include "TDirectoryFile.h"
@@ -13,9 +14,9 @@ using namespace std;
 int main(int argc, char **argv){
     Event myevent;
     
-    if (argc < 6){
+    if (argc < 7){
         // Tell the user how to run the program
-        std::cerr << "Usage: " << argv[0] << " <events> <iroot file> <oroot file> <TDirectory> <TTree>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <events> <iroot file> <oroot file> <TDirectory> <TTree> <output json file>" << std::endl;
         return 1;
     }
     Long64_t nevents = std::atoll(argv[1]);
@@ -23,6 +24,7 @@ int main(int argc, char **argv){
     TString orfile(argv[3]);
     TString tdir(argv[4]);
     TString ttree(argv[5]);
+    TString fnjson(argv[6]);
 
     cout << "Opening root file: " << rfile << endl;
     TFile T(rfile);
@@ -98,6 +100,26 @@ int main(int argc, char **argv){
     T.Close();
     E.Write();
     E.Close();
+    
+    // write report to JSON file
+    Json::Value root;   // will contains the root value after parsing
+    root["root_file"]=rfile.Data();
+    root["root_tree_path"]=tdir.Data();
+    root["root_tree_name"] = ttree.Data();
+    root["events_total"] = nentries;
+    root["events_analyzed"] = nevents;
+    root["Selection"]["Cut 1"] = 0;
+    root["Selection"]["Cut 2"] = 0;
+    root["Selection"]["Cut 3"] = 0;
+    root["Selection"]["Cut 4"] = 0;
+    
+    Json::StyledWriter writer;
+    std::string outputConfig = writer.write( root );
+    std::ofstream out(fnjson.Data());
+    out << outputConfig << std::endl;
+    out.close();
+    std::cout << "wrote " << fnjson.Data() << "\n";
+    
     return 0;
 }
 
