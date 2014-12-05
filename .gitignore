@@ -42,4 +42,6 @@ data
 #other
 *.json
 *.root
+*.pdf
+*.png
 stanalysis
