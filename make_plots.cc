@@ -1,5 +1,6 @@
-void make_plots(char * ifname){
+void make_plots(TString ifname){
 	TString dpath="plots/";
+	dpath=dpath+ifname+"/";
 	TFile T(ifname);
 	if (! T.IsOpen() ){
 		cout << "Couldn't open file: " << ifname << endl;
@@ -22,5 +23,6 @@ void make_plots(char * ifname){
 		}
 		delete obj;
 	}
+	
 
 }

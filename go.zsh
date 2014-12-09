@@ -20,19 +20,19 @@
 #    ZJets.root
 #    ZZ.root  */
 
+dataset=TChannel
+tag=2J_1T_noSyst
+prefix=TreesEle
 EVENTS=-1
-FPATH=. #/eos/cms/store/group/phys_top/SingleTop/Trees/MC
-FROOT_I=test.root
+FPATH=MC
+FROOT_I=${prefix}_${dataset}_${tag}.root
 RDIR=/ #TreesEle
-#RDIR=TreesMu
-#RTREE=TTBar_2J_1T_noSyst
-#RTREE=TChannel_2J_1T_noSyst
-RTREE=TChannel_2J_1T_noSyst
+RTREE=${dataset}_${tag}
 
 if [[ ${RDIR} == / ]]; then
-    FROOT_O=h-${RTREE}-$FROOT_I
+    FROOT_O=h-$FROOT_I
 else
-    FROOT_O=h-${RTREE}-${RDIR}-$FROOT_I
+    FROOT_O=h-$FROOT_I
 fi
 
 echo $FROOT_O
@@ -42,6 +42,7 @@ if [[ $1 != "-na" ]]; then
 fi
 
 if [[ $1 != "-np" ]]; then
+    mkdir -p plots/$FROOT_O
     ./make_plots.zsh $FROOT_O
 fi
 
