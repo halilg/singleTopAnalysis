@@ -20,12 +20,22 @@
 #    ZJets.root
 #    ZZ.root  */
 
-dataset=TChannel
-tag=2J_1T_noSyst
+#dataset=TChannel
+#dataset=TTBar
+dataset=Data
+tag=2J_0T_noSyst
 prefix=TreesEle
-EVENTS=-1
-FPATH=MC
-FROOT_I=${prefix}_${dataset}_${tag}.root
+EVENTS=1
+
+if [[ $dataset == "Data" ]]; then
+    FPATH=.
+    FROOT_I=${prefix}_${dataset}_${tag}.json
+else
+    FPATH=MC
+    FROOT_I=${prefix}_${dataset}_${tag}.root
+fi
+
+
 RDIR=/ #TreesEle
 RTREE=${dataset}_${tag}
 
@@ -35,13 +45,14 @@ else
     FROOT_O=h-$FROOT_I
 fi
 
-echo $FROOT_O
+#echo $FROOT_O
 
 if [[ $1 != "-na" ]]; then
-    ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE ${FROOT_I}.json
+    make analysis.exe || exit
+    ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE
 fi
 
-if [[ $1 != "-np" ]]; then
+if [[ $1 == "-p" ]]; then
     mkdir -p plots/$FROOT_O
     ./make_plots.zsh $FROOT_O
 fi

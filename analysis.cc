@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "TFile.h"
+#include "TChain.h"
 #include "TTree.h"
 #include "TDirectoryFile.h"
 #include "TH1D.h"
@@ -13,37 +14,69 @@
 using namespace std;
 int main(int argc, char **argv){
     Event myevent;
+    Json::Value root;   // will contains the root value after parsing
+    bool debug;
+    debug=true;
     
-    if (argc < 7){
+    if (argc < 6){
         // Tell the user how to run the program
-        std::cerr << "Usage: " << argv[0] << " <events> <iroot file> <oroot file> <TDirectory> <TTree> <output json file>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <events> <iroot file> <oroot file> <TDirectory> <TTree>" << std::endl;
         return 1;
     }
     Long64_t nevents = std::atoll(argv[1]);
-    TString rfile(argv[2]);
+    TString rjfile(argv[2]);
     TString orfile(argv[3]);
     TString tdir(argv[4]);
     TString ttree(argv[5]);
-    TString fnjson(argv[6]);
 
-    cout << "Opening root file: " << rfile << endl;
-    TFile T(rfile);
+    TString treeName;
+    TString stemp;
+    treeName=tdir+"/"+ttree;
+    TChain T(treeName);
     
-    if (! T.IsOpen() ){
-        cout << "Cannot open root file: " << rfile << endl;
-        return 1;
-    }else{
-        cout << "Done." << endl;
+    // is the input file a json file?
+    if (debug) cout << "will analyze " << rjfile << endl;
+    if (rjfile.Contains(".json")){
+        Json::Reader reader;
+        std::string line, inputConfig;
+        std::ifstream myfile (rjfile);
+        if (myfile.is_open()){
+            while ( getline (myfile,line) ){ inputConfig += line; }
+            myfile.close();
+        } else {
+          cerr << "Unable to open file " << rjfile << endl;
+          return 1;
+        }    
+        bool parsingSuccessful = reader.parse( inputConfig, root );
+        if ( !parsingSuccessful ){
+            // report to the user the failure and their locations in the document.
+            cerr  << "Failed to parse configuration\n" << reader.getFormattedErrorMessages();
+            return 1;
+        }
+        if (debug) cout << "json file contains pointers to " << root["rootfiles"].size() << " ROOT files" << endl;
+        for (int i = 0; i<root["rootfiles"].size(); i++) {
+            stemp=root["path"].asString() + "/" + root["rootfiles"][i].asString();
+            cout << "adding to chain: " << stemp << endl;
+            T.Add(stemp);
+        }
+    } else {
+        cout << "Opening root file: " << rjfile << endl;
+        //TFile T(rfile);
+        T.Add(rjfile);
     }
     
     cout << "Starting analysis\n";
-    TString treeName;
-    treeName=tdir+"/"+ttree;
     cout << "Accessing tree: " << treeName << endl;
-    TTree* myTree = (TTree*)T.Get(treeName);
+    //TTree* myTree = (TTree*)T.Get(treeName);
+    TChain* myTree = &T;
     
     Long64_t nentries = myTree->GetEntries();
-    cout << "Entries in ROOT tree: " << nentries << endl;
+    if (nentries == 0){
+        cerr << "ROOT tree had no events\n";
+        return 1;
+    }else{
+        cout << "Entries in ROOT tree: " << nentries << endl;
+    }
     
     // Create the output ROOT file and book the histograms
     TFile E(orfile,"recreate");
@@ -97,13 +130,12 @@ int main(int argc, char **argv){
    }
     cout << "\nAnalyzed " << i-1<< " entries\n";
     cout << "histograms written to: " << orfile << endl;
-    T.Close();
+    //T.Close();
     E.Write();
     E.Close();
     
     // write report to JSON file
-    Json::Value root;   // will contains the root value after parsing
-    root["root_file"]=rfile.Data();
+    root["root_file"]=rjfile.Data();
     root["root_tree_path"]=tdir.Data();
     root["root_tree_name"] = ttree.Data();
     root["events_total"] = nentries;
@@ -115,10 +147,14 @@ int main(int argc, char **argv){
     
     Json::StyledWriter writer;
     std::string outputConfig = writer.write( root );
-    std::ofstream out(fnjson.Data());
+    stemp=rjfile.Data();
+    stemp.ReplaceAll(".json","");
+    stemp.ReplaceAll(".root","");
+    stemp = stemp + "-analysis.json";
+    std::ofstream out(stemp);
     out << outputConfig << std::endl;
     out.close();
-    std::cout << "wrote " << fnjson.Data() << "\n";
+    std::cout << "analysis report written to: " << stemp << "\n";
     
     return 0;
 }
