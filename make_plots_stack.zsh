@@ -1,16 +1,18 @@
 #!/usr/bin/env zsh
 
-dpath=plots/stack
-hn=h_mtwMass
-mkdir -p $dpath
+#-- Configuration -------------------------------------------
+hn=h_mtwMass #h_metPt h_leptonPt h_leptonDeltaCorrectedRelIso h_leptonRhoCorrectedRelIso
+extension=pdf
+dpath=plots/stack/
 
-dpath=\"$dpath\"
+#------------------------------------------------------------
+# if provided, assign command line parameters to variables
+[[ $1 != "" ]] && hn=$1
+[[ $2 != "" ]] && extension=$2
+[[ $3 != "" ]] && dpath=$3
 
-rfn0=\"h-TreesEle_TChannel_2J_1T_noSyst.root\"
-rfn1=\"h-TreesEle_TTBar_2J_1T_noSyst.root\"
-hn=\"$hn\"
-extension=\".pdf\"
-
-root.exe -l -b -q "make_plots_stack.cc($dpath, $hn, $extension)"
+#------------------------------------------------------------
+fnc=make_plots_stack.cc(\"$dpath\", \"$hn\", \".$extension\")
+root.exe -l -b -q "$fnc"
 
 

@@ -26,6 +26,7 @@ int main(int argc, char **argv){
         return 1;
     }
     Long64_t nevents = std::atoll(argv[1]);
+    Long64_t wevents = 0;
     TString rjfile(argv[2]);
     TString orfile(argv[3]);
     TString tdir(argv[4]);
@@ -93,21 +94,28 @@ int main(int argc, char **argv){
     for (i=1; i<nevents+1;i++) {
         if (i % 1000 == 0) cout << "+" << std::flush;
         myTree->GetEntry(i);
-        nVertices.Fill(myevent.nVertices);
-        nGoodVertices.Fill(myevent.nGoodVertices);
-        h_topMass.Fill(myevent.topMass);
-        h_leptonPt.Fill(myevent.leptonPt);
-        h_leptonEta.Fill(myevent.leptonEta);
-        h_leptonPhi.Fill(myevent.leptonPhi);
-        h_fJetEta.Fill(myevent.fJetEta);
-        h_bJetEta.Fill(myevent.bJetEta);
-        h_mtwMass.Fill(myevent.mtwMass);
-        h_metPt.Fill(myevent.metPt);
-        h_Mlb1.Fill(myevent.Mlb1);
-        h_Mlb2.Fill(myevent.Mlb2);
-        h_b1b2Mass.Fill(myevent.b1b2Mass);
-        h_leptonRhoCorrectedRelIso.Fill(myevent.leptonRhoCorrectedRelIso);
-        h_leptonDeltaCorrectedRelIso.Fill(myevent.leptonDeltaCorrectedRelIso);
+        nVertices.Fill(myevent.nVertices, myevent.weight);
+        nGoodVertices.Fill(myevent.nGoodVertices, myevent.weight);
+        h_topMass.Fill(myevent.topMass, myevent.weight);
+        h_leptonPt.Fill(myevent.leptonPt, myevent.weight);
+        h_leptonEta.Fill(myevent.leptonEta, myevent.weight);
+        h_leptonPhi.Fill(myevent.leptonPhi, myevent.weight);
+        h_fJetEta.Fill(myevent.fJetEta, myevent.weight);
+        h_bJetEta.Fill(myevent.bJetEta, myevent.weight);
+        h_mtwMass.Fill(myevent.mtwMass, myevent.weight);
+        h_metPt.Fill(myevent.metPt, myevent.weight);
+        h_Mlb1.Fill(myevent.Mlb1, myevent.weight);
+        h_Mlb2.Fill(myevent.Mlb2, myevent.weight);
+        h_b1b2Mass.Fill(myevent.b1b2Mass, myevent.weight);
+        h_leptonRhoCorrectedRelIso.Fill(myevent.leptonRhoCorrectedRelIso, myevent.weight);
+        h_leptonDeltaCorrectedRelIso.Fill(myevent.leptonDeltaCorrectedRelIso, myevent.weight);
+        
+        // selection
+        bool selected=true;
+        
+        if (selected){
+            wevents += myevent.weight;
+        }
         
    }
     cout << "\nAnalyzed " << i-1<< " entries\n";
@@ -123,6 +131,7 @@ int main(int argc, char **argv){
     root["root_tree_name"] = ttree.Data();
     root["events_total"] = nentries;
     root["events_analyzed"] = nevents;
+    root["events_yield"] = wevents;
     root["Selection"]["Cut 1"] = 0;
     root["Selection"]["Cut 2"] = 0;
     root["Selection"]["Cut 3"] = 0;
