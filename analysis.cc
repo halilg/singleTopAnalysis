@@ -10,6 +10,7 @@
 #include "analysis.h"
 #include <algorithm>
 #include <json/json.h>
+#include <json2tchain.h>
 
 using namespace std;
 int main(int argc, char **argv){
@@ -32,43 +33,23 @@ int main(int argc, char **argv){
     TString treeName;
     TString stemp;
     treeName=tdir+"/"+ttree;
-    TChain T(treeName);
+    TChain * T;
     
     // is the input file a json file?
     if (debug) cout << "will analyze " << rjfile << endl;
     if (rjfile.Contains(".json")){
-        Json::Reader reader;
-        std::string line, inputConfig;
-        std::ifstream myfile (rjfile);
-        if (myfile.is_open()){
-            while ( getline (myfile,line) ){ inputConfig += line; }
-            myfile.close();
-        } else {
-          cerr << "Unable to open file " << rjfile << endl;
-          return 1;
-        }    
-        bool parsingSuccessful = reader.parse( inputConfig, root );
-        if ( !parsingSuccessful ){
-            // report to the user the failure and their locations in the document.
-            cerr  << "Failed to parse configuration\n" << reader.getFormattedErrorMessages();
-            return 1;
-        }
-        if (debug) cout << "json file contains pointers to " << root["rootfiles"].size() << " ROOT files" << endl;
-        for (int i = 0; i<root["rootfiles"].size(); i++) {
-            stemp=root["path"].asString() + "/" + root["rootfiles"][i].asString();
-            cout << "adding to chain: " << stemp << endl;
-            T.Add(stemp);
-        }
+        T = json2tchain(treeName, rjfile);
+        if (debug) cout << "received chain contains " <<  T->GetEntries() << " events" << endl;
     } else {
+        T = new TChain(treeName);
         cout << "Opening root file: " << rjfile << endl;
-        //TFile T(rfile);
-        T.Add(rjfile);
+        T->Add(rjfile);
     }
     
     cout << "Starting analysis\n";
-    cout << "Accessing tree: " << treeName << endl;
+    //cout << "Accessing tree: " << treeName << endl;
     //TTree* myTree = (TTree*)T.Get(treeName);
-    TChain* myTree = &T;
+    TTree* myTree = T; //->GetTree();
     
     Long64_t nentries = myTree->GetEntries();
     if (nentries == 0){
@@ -155,7 +136,7 @@ int main(int argc, char **argv){
     out << outputConfig << std::endl;
     out.close();
     std::cout << "analysis report written to: " << stemp << "\n";
-    
+    delete T; 
     return 0;
 }
 
