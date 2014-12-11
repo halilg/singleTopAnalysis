@@ -27,7 +27,8 @@ event.o: event.cc event.h Makefile
 analysis.o: analysis.h analysis.cc Makefile
 	$(CPP) -c analysis.cc $(CPPFLAGS) $(CROOT) -o $@
 
-analysis.exe: event.o analysis.o jsoncpp.o json2tchain.o Makefile
+analysis.exe: event.o analysis.o jsoncpp.o json2tchain.o git_ref.h Makefile
+	echo "#define GIT_REF \"`git show-ref refs/heads/master | cut -d " " -f 1 | cut -c 31-40`\"" > git_ref.h
 	$(CPP) analysis.o event.o jsoncpp.o json2tchain.o $(LROOT) -o $@
 	
 clean:

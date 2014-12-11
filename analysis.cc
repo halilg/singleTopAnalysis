@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <json/json.h>
 #include <json2tchain.h>
+#include <git_ref.h>
 
 using namespace std;
 int main(int argc, char **argv){
@@ -116,6 +117,7 @@ int main(int argc, char **argv){
     E.Close();
     
     // write report to JSON file
+    root["git_ref"]=GIT_REF;
     root["root_file"]=rjfile.Data();
     root["root_tree_path"]=tdir.Data();
     root["root_tree_name"] = ttree.Data();
