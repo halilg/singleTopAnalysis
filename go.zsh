@@ -25,7 +25,7 @@
 dataset=Data
 tag=2J_0T_noSyst
 prefix=TreesEle
-EVENTS=-1
+EVENTS=10  # -1 for all events
 
 if [[ $dataset == "Data" ]]; then
     FPATH=.
