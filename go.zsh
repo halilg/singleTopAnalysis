@@ -20,7 +20,9 @@
 #    ZJets.root
 #    ZZ.root  */
 
-#dataset=TChannel
+
+# defaults
+dataset=TChannel
 #dataset=TWChannel
 #dataset=SbarChannel
 #dataset=TTBar
@@ -31,14 +33,19 @@ dataset=ZJets
 #dataset=ZZ
 #dataset=QCDEle
 #dataset=Data
-
 tag=2J_0T_noSyst
 prefix=TreesEle
+
+# if provided, assign command line parameters to variables
+[[ $1 != "" ]] && dataset=$1
+[[ $2 != "" ]] && tag=$2
+[[ $3 != "" ]] && prefix=$3
+
 EVENTS=-1  # -1 for all events
 RDIR=/ #TreesEle
 RTREE=${dataset}_${tag}
+FROOT_O=h-${prefix}_${dataset}_${tag}.root
 
-FROOT_O=${prefix}_${dataset}_${tag}.root
 if [[ $dataset == "Data" ]]; then
     FPATH=.
     FROOT_I=${prefix}_${dataset}_${tag}.json

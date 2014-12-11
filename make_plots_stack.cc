@@ -1,7 +1,22 @@
-void make_plots_shapecomparison(TString dpath, TString rfn0, TString rfn1, TString hn, TString extension){
+void make_plots_shapecomparison(TString dpath, TString hn, TString extension){
 	
-	TFile tf0(rfn0);
-	TFile tf1(rfn1);
+	TFile tfdata("h-TreesEle_Data_2J_0T_noSyst.root");
+	TFile tftch("TreesEle_TChannel_2J_0T_noSyst.root");
+	TFile tftwch("TreesEle_TWChannel_2J_0T_noSyst.root");
+	//TFile tfsch();
+	TFile tfqcd("TreesEle_QCDEle_2J_0T_noSyst.root");
+	TFile tfwj("TreesEle_WJets_2J_0T_noSyst.root");
+	TFile tfzj("TreesEle_ZJets_2J_0T_noSyst.root");
+	TFile tftt("h-TreesEle_TTBar_2J_1T_noSyst.root");
+	//TFile tfdb();
+
+//TreesEle_ZZ_2J_0T_noSyst.root		TreesEle_WW_2J_0T_noSyst.root		TreesEle_WZ_2J_0T_noSyst.root
+	
+			
+	
+	
+	return;
+	
 	if (! tf0.IsOpen() ){
 		cout << "Couldn't open file: " << rfn0 << endl;
 		return;

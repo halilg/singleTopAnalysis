@@ -6,6 +6,6 @@ rfn1=\"h-TreesEle_TTBar_2J_1T_noSyst.root\"
 hn=\"h_fJetEta\"
 extension=\".pdf\"
 
-root.exe -l -b -q "make_plots_stack.cc($hn, $extension)"
+root.exe -l -b -q "make_plots_stack.cc($dpath, $hn, $extension)"
 
 
