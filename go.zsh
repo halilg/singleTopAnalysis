@@ -21,28 +21,30 @@
 #    ZZ.root  */
 
 #dataset=TChannel
+#dataset=TWChannel
+#dataset=SbarChannel
 #dataset=TTBar
-dataset=Data
+#dataset=WJets
+dataset=ZJets
+#dataset=WW
+#dataset=WZ
+#dataset=ZZ
+#dataset=QCDEle
+#dataset=Data
+
 tag=2J_0T_noSyst
 prefix=TreesEle
-EVENTS=10  # -1 for all events
+EVENTS=-1  # -1 for all events
+RDIR=/ #TreesEle
+RTREE=${dataset}_${tag}
 
+FROOT_O=${prefix}_${dataset}_${tag}.root
 if [[ $dataset == "Data" ]]; then
     FPATH=.
     FROOT_I=${prefix}_${dataset}_${tag}.json
 else
     FPATH=MC
     FROOT_I=${prefix}_${dataset}_${tag}.root
-fi
-
-
-RDIR=/ #TreesEle
-RTREE=${dataset}_${tag}
-
-if [[ ${RDIR} == / ]]; then
-    FROOT_O=h-$FROOT_I
-else
-    FROOT_O=h-$FROOT_I
 fi
 
 #echo $FROOT_O
