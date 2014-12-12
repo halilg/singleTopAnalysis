@@ -44,7 +44,7 @@ prefix=TreesEle
 EVENTS=-1  # -1 for all events
 RDIR=/ #TreesEle
 RTREE=${dataset}_${tag}
-FROOT_O=results/h-${prefix}_${dataset}_${tag}.root
+FROOT_O=root/h-${prefix}_${dataset}_${tag}.root
 
 if [[ $dataset == "Data" ]]; then
     FPATH=data

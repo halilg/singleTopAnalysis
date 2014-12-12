@@ -36,6 +36,7 @@ int main(int argc, char **argv){
     TString stemp;
     treeName=tdir+"/"+ttree;
     TChain * T;
+    bool use_weights=false;
     
     // is the input file a json file?
     if (debug) cout << "will analyze " << rjfile << endl;
@@ -63,7 +64,7 @@ int main(int argc, char **argv){
     
     // Create the output ROOT file and book the histograms
     TFile E(orfile,"recreate");
-    TH1D h_metPt("h_metPt","MET; MET (GeV); Events", 50, 0, 250);
+    TH1D h_metPt("h_metPt","MET; MET (GeV); Events", 50, 0, 150);
     TH1D h_topMass("h_topMass","Top Mass; Mass(GeV); Events", 50, 100, 250);
     TH1D h_leptonPt("h_leptonPt","; PT(GeV); Events", 50, 0, 250);
     TH1D h_fJetPt("h_fJetPt","; PT(GeV); Events", 50, 0, 250); //
@@ -102,46 +103,84 @@ int main(int argc, char **argv){
     myevent.register_branches(myTree);
     cout << "Branches set\n";
     
+    // determine if electron or muon dataset
+    myTree->GetEntry(0);
+    bool isElectronDST = false;
+    if (rjfile.Contains("TreesEle")) isElectronDST = true;
+    if (isElectronDST) {cout << "electron dataset detected\n";} else {cout << "muon dataset detected\n";} 
+    
+    // determine the number of events to analyze
     Long64_t i;
-    //cout << nevents << "-" << nentries << "-" << std::min(nevents,nentries) << endl;
     nevents= (nevents < nentries) ? nevents : nentries; // std::min(nevents,nentries);
     if (nevents == -1) nevents = nentries;
+    
+    Long64_t c0=0;
+    Long64_t c1=0;
+    Long64_t y=0;
     cout << "Will analyze " << nevents << " events\n 1000X:";
     for (i=1; i<nevents+1;i++) {
         if (i % 1000 == 0) cout << "+" << std::flush;
         myTree->GetEntry(i);
-
-        nVertices.Fill(myevent.nVertices);
-        nGoodVertices.Fill(myevent.nGoodVertices);
-        h_topMass.Fill(myevent.topMass);
-        h_leptonPt.Fill(myevent.leptonPt);
-        h_leptonEta.Fill(myevent.leptonEta);
-        h_leptonPhi.Fill(myevent.leptonPhi);
-        h_fJetEta.Fill(myevent.fJetEta);
-        h_bJetEta.Fill(myevent.bJetEta);
-        h_mtwMass.Fill(myevent.mtwMass);
-        h_metPt.Fill(myevent.metPt);
-        h_Mlb1.Fill(myevent.Mlb1);
-        h_Mlb2.Fill(myevent.Mlb2);
-        h_b1b2Mass.Fill(myevent.b1b2Mass);
-        h_leptonRhoCorrectedRelIso.Fill(myevent.leptonRhoCorrectedRelIso);
-        h_leptonDeltaCorrectedRelIso.Fill(myevent.leptonDeltaCorrectedRelIso);
-        h_fJetPt.Fill(myevent.fJetPt);
-        h_bJetPt.Fill(myevent.bJetPt);
-        h_firstJetPt.Fill(myevent.firstJetPt);
-        h_secondJetPt.Fill(myevent.secondJetPt);
-        h_looseJetPt.Fill(myevent.looseJetPt);
-        h_bJet1Pt.Fill(myevent.bJet1Pt);
-        h_bJet2Pt.Fill(myevent.bJet2Pt);
-        h_topPt.Fill(myevent.topPt);
-        h_top1Pt.Fill(myevent.top1Pt);
-        h_top2Pt.Fill(myevent.top2Pt);
-
+        if (!use_weights) myevent.weight=0;
         
         // selection
         bool selected=true;
+        if (isElectronDST) { // electron dataset cuts
+            if(selected){
+                selected = (myevent.leptonPt > 30) &&
+                           (fabs(myevent.leptonEta) < 2.5) &&
+                           (fabs(myevent.leptonEta) < 1.44) &&
+                           (fabs(myevent.leptonEta) > 1.57) &&
+                           (myevent.leptonRhoCorrectedRelIso < 0.1);
+            }
+            //cout << selected << "eta " << myevent.leptonEta << ", pt " <<myevent.leptonPt << " iso: " << myevent.leptonRhoCorrectedRelIso << endl;
+            //exit(0);
+            if (selected){
+                ++c0;
+                selected = myevent.metPt > 45; // GeV
+            }
+            if (selected) ++c1;
+        } else { // muon dataset cuts
+            if(selected){
+                selected = (myevent.leptonPt > 26) &&
+                           (fabs(myevent.leptonEta) < 2.1) &&
+                           (myevent.leptonDeltaCorrectedRelIso < 0.12);
+            }
+            if(selected){
+                ++c0;
+                selected = (myevent.mtwMass > 50); // GeV
+            }
+            if(selected) ++c1;
+        }
         
         if (selected){
+            ++y; // event yield
+            // fill histograms
+            nVertices.Fill(myevent.nVertices, myevent.weight);
+            nGoodVertices.Fill(myevent.nGoodVertices, myevent.weight);
+            h_topMass.Fill(myevent.topMass, myevent.weight);
+            h_leptonPt.Fill(myevent.leptonPt, myevent.weight);
+            h_leptonEta.Fill(myevent.leptonEta, myevent.weight);
+            h_leptonPhi.Fill(myevent.leptonPhi, myevent.weight);
+            h_fJetEta.Fill(myevent.fJetEta, myevent.weight);
+            h_bJetEta.Fill(myevent.bJetEta, myevent.weight);
+            h_mtwMass.Fill(myevent.mtwMass, myevent.weight);
+            h_metPt.Fill(myevent.metPt, myevent.weight);
+            h_Mlb1.Fill(myevent.Mlb1, myevent.weight);
+            h_Mlb2.Fill(myevent.Mlb2, myevent.weight);
+            h_b1b2Mass.Fill(myevent.b1b2Mass, myevent.weight);
+            h_leptonRhoCorrectedRelIso.Fill(myevent.leptonRhoCorrectedRelIso, myevent.weight);
+            h_leptonDeltaCorrectedRelIso.Fill(myevent.leptonDeltaCorrectedRelIso, myevent.weight);
+            h_fJetPt.Fill(myevent.fJetPt, myevent.weight);
+            h_bJetPt.Fill(myevent.bJetPt, myevent.weight);
+            h_firstJetPt.Fill(myevent.firstJetPt, myevent.weight);
+            h_secondJetPt.Fill(myevent.secondJetPt, myevent.weight);
+            h_looseJetPt.Fill(myevent.looseJetPt, myevent.weight);
+            h_bJet1Pt.Fill(myevent.bJet1Pt, myevent.weight);
+            h_bJet2Pt.Fill(myevent.bJet2Pt, myevent.weight);
+            h_topPt.Fill(myevent.topPt, myevent.weight);
+            h_top1Pt.Fill(myevent.top1Pt, myevent.weight);
+            h_top2Pt.Fill(myevent.top2Pt, myevent.weight);
             wevents += myevent.weight;
         }
         
@@ -159,11 +198,12 @@ int main(int argc, char **argv){
     root["root_tree_name"] = ttree.Data();
     root["events_total"] = nentries;
     root["events_analyzed"] = nevents;
-    root["events_yield"] = wevents;
-    root["Selection"]["Cut 1"] = 0;
-    root["Selection"]["Cut 2"] = 0;
-    root["Selection"]["Cut 3"] = 0;
-    root["Selection"]["Cut 4"] = 0;
+    root["events_yield_w"] = wevents;
+    root["events_yield"] = y;
+    root["Selection"]["Cut_0"]["Description"] = "Kinematic cuts";
+    root["Selection"]["Cut_0"]["Passed"] = c0;
+    root["Selection"]["Cut_1"]["Description"] = (isElectronDST) ? "MET Cut" : "MTW Cut";
+    root["Selection"]["Cut_1"]["Passed"] = c1;
     
     Json::StyledWriter writer;
     std::string outputConfig = writer.write( root );
