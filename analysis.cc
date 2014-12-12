@@ -99,7 +99,7 @@ int main(int argc, char **argv){
     cout << "Histograms created\n";
     
     // Set branch addresses.   
-    myevent.register_branches(myTr      ee);
+    myevent.register_branches(myTree);
     cout << "Branches set\n";
     
     Long64_t i;
