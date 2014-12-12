@@ -47,6 +47,13 @@ void make_plots_stack(TString dpath, TString hn, TString extension){
 	
 	THStack hs("hs","Stacked 1D histograms");
 	
+	htch->Scale(19700);
+	hwj->Scale(19700);
+	htt->Scale(19700);
+	hzj->Scale(19700);
+	hqcd->Scale(19700);
+	htwch->Scale(19700);
+	       
 	hs.Add(htch);
 	hs.Add(hwj);
 	hs.Add(htt);

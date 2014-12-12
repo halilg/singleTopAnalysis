@@ -26,6 +26,7 @@ int main(int argc, char **argv){
         return 1;
     }
     Long64_t nevents = std::atoll(argv[1]);
+    Long64_t wevents = 0;
     TString rjfile(argv[2]);
     TString orfile(argv[3]);
     TString tdir(argv[4]);
@@ -109,6 +110,7 @@ int main(int argc, char **argv){
     for (i=1; i<nevents+1;i++) {
         if (i % 1000 == 0) cout << "+" << std::flush;
         myTree->GetEntry(i);
+
         nVertices.Fill(myevent.nVertices);
         nGoodVertices.Fill(myevent.nGoodVertices);
         h_topMass.Fill(myevent.topMass);
@@ -134,6 +136,14 @@ int main(int argc, char **argv){
         h_topPt.Fill(myevent.topPt);
         h_top1Pt.Fill(myevent.top1Pt);
         h_top2Pt.Fill(myevent.top2Pt);
+
+        
+        // selection
+        bool selected=true;
+        
+        if (selected){
+            wevents += myevent.weight;
+        }
         
    }
     cout << "\nAnalyzed " << i-1<< " entries\n";
@@ -149,6 +159,7 @@ int main(int argc, char **argv){
     root["root_tree_name"] = ttree.Data();
     root["events_total"] = nentries;
     root["events_analyzed"] = nevents;
+    root["events_yield"] = wevents;
     root["Selection"]["Cut 1"] = 0;
     root["Selection"]["Cut 2"] = 0;
     root["Selection"]["Cut 3"] = 0;
