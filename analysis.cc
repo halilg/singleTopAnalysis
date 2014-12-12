@@ -65,6 +65,22 @@ int main(int argc, char **argv){
     TH1D h_metPt("h_metPt","MET; MET (GeV); Events", 50, 0, 250);
     TH1D h_topMass("h_topMass","Top Mass; Mass(GeV); Events", 50, 100, 250);
     TH1D h_leptonPt("h_leptonPt","; PT(GeV); Events", 50, 0, 250);
+    TH1D h_fJetPt("h_fJetPt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_bJetPt("h_bJetPt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_firstJetPt("h_firstJetPt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_secondJetPt("h_secondJetPt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_looseJetPt("h_looseJetPt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_bJet1Pt("h_bJet1Pt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_bJet2Pt("h_bJet2Pt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_topPt("h_topPt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_top1Pt("h_top1Pt","; PT(GeV); Events", 50, 0, 250); //
+    TH1D h_top2Pt("h_top2Pt","; PT(GeV); Events", 50, 0, 250); //
+    
+    //TH1D h_("h_","; PT(GeV); Events", 50, 0, 250); //
+    //TH1D h_("h_","; PT(GeV); Events", 50, 0, 250); //
+    //TH1D h_("h_","; PT(GeV); Events", 50, 0, 250); //
+    //TH1D h_("h_","; PT(GeV); Events", 50, 0, 250); //
+    
     TH1D h_leptonEta("h_leptonEta","; eta; Events", 50, 0, 6);
     TH1D h_leptonPhi("h_leptonPhi","; phi; Events", 50, -3.14, 3.14);
     //TH1D h_("h_","; (GeV); Events", 50, 100, 250);
@@ -82,7 +98,7 @@ int main(int argc, char **argv){
     cout << "Histograms created\n";
     
     // Set branch addresses.   
-    myevent.register_branches(myTree);
+    myevent.register_branches(myTr      ee);
     cout << "Branches set\n";
     
     Long64_t i;
@@ -108,6 +124,16 @@ int main(int argc, char **argv){
         h_b1b2Mass.Fill(myevent.b1b2Mass);
         h_leptonRhoCorrectedRelIso.Fill(myevent.leptonRhoCorrectedRelIso);
         h_leptonDeltaCorrectedRelIso.Fill(myevent.leptonDeltaCorrectedRelIso);
+        h_fJetPt.Fill(myevent.fJetPt);
+        h_bJetPt.Fill(myevent.bJetPt);
+        h_firstJetPt.Fill(myevent.firstJetPt);
+        h_secondJetPt.Fill(myevent.secondJetPt);
+        h_looseJetPt.Fill(myevent.looseJetPt);
+        h_bJet1Pt.Fill(myevent.bJet1Pt);
+        h_bJet2Pt.Fill(myevent.bJet2Pt);
+        h_topPt.Fill(myevent.topPt);
+        h_top1Pt.Fill(myevent.top1Pt);
+        h_top2Pt.Fill(myevent.top2Pt);
         
    }
     cout << "\nAnalyzed " << i-1<< " entries\n";
