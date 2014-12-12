@@ -44,10 +44,10 @@ prefix=TreesEle
 EVENTS=-1  # -1 for all events
 RDIR=/ #TreesEle
 RTREE=${dataset}_${tag}
-FROOT_O=h-${prefix}_${dataset}_${tag}.root
+FROOT_O=results/h-${prefix}_${dataset}_${tag}.root
 
 if [[ $dataset == "Data" ]]; then
-    FPATH=.
+    FPATH=data
     FROOT_I=${prefix}_${dataset}_${tag}.json
 else
     FPATH=MC
@@ -56,14 +56,19 @@ fi
 
 #echo $FROOT_O
 
+OFCODE=0
 if [[ $1 != "-na" ]]; then
-    make analysis.exe || exit
+    make -s analysis.exe || exit
     ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE
+    OFCODE=$?
+    [[ $OFCODE == 0 ]] || exit $OFCODE
 fi
 
 if [[ $1 == "-p" ]]; then
     mkdir -p plots/$FROOT_O
     ./make_plots.zsh $FROOT_O
+    OFCODE=$?
+    [[ $OFCODE == 0 ]] || exit $OFCODE
 fi
 
 
