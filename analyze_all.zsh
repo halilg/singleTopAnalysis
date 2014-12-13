@@ -14,6 +14,6 @@ for tag in $tags; do
 done
 
 echo "@@@@@ Rendering plots"
-for rf in h-*.root; do
+for rf in root/h-*.root; do
     ./make_plots.zsh $rf
 done

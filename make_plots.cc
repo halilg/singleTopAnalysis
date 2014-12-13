@@ -1,6 +1,4 @@
-void make_plots(TString ifname){
-	TString dpath="plots/";
-	dpath=dpath+ifname+"/";
+void make_plots(TString ifname, TString opath){
 	TFile T(ifname);
 	if (! T.IsOpen() ){
 		cout << "Couldn't open file: " << ifname << endl;
@@ -18,11 +16,9 @@ void make_plots(TString ifname){
 			cout << "is histogram\n";
 			obj->Draw();
 			TString extension(".pdf");
-			TString fname = dpath+key->GetName()+extension;
+			TString fname = opath + "/" + key->GetName()+extension;
 			c.Print(fname);
 		}
 		delete obj;
 	}
-	
-
 }

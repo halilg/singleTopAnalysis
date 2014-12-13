@@ -121,7 +121,7 @@ int main(int argc, char **argv){
     for (i=1; i<nevents+1;i++) {
         if (i % 1000 == 0) cout << "+" << std::flush;
         myTree->GetEntry(i);
-        if (!use_weights) myevent.weight=0;
+        if (!use_weights) myevent.weight=1;
         
         // selection
         bool selected=true;
@@ -129,11 +129,10 @@ int main(int argc, char **argv){
             if(selected){
                 selected = (myevent.leptonPt > 30) &&
                            (fabs(myevent.leptonEta) < 2.5) &&
-                           (fabs(myevent.leptonEta) < 1.44) &&
-                           (fabs(myevent.leptonEta) > 1.57) &&
+                           (fabs(myevent.leptonEta) < 1.44 || fabs(myevent.leptonEta) > 1.57) &&
                            (myevent.leptonRhoCorrectedRelIso < 0.1);
             }
-            //cout << selected << "eta " << myevent.leptonEta << ", pt " <<myevent.leptonPt << " iso: " << myevent.leptonRhoCorrectedRelIso << endl;
+            //cout << selected << "eta " << fabs(myevent.leptonEta) << ", pt " <<myevent.leptonPt << " iso: " << myevent.leptonRhoCorrectedRelIso << endl;
             //exit(0);
             if (selected){
                 ++c0;
@@ -145,6 +144,7 @@ int main(int argc, char **argv){
                 selected = (myevent.leptonPt > 26) &&
                            (fabs(myevent.leptonEta) < 2.1) &&
                            (myevent.leptonDeltaCorrectedRelIso < 0.12);
+                
             }
             if(selected){
                 ++c0;
@@ -155,6 +155,7 @@ int main(int argc, char **argv){
         
         if (selected){
             ++y; // event yield
+            wevents += myevent.weight;
             // fill histograms
             nVertices.Fill(myevent.nVertices, myevent.weight);
             nGoodVertices.Fill(myevent.nGoodVertices, myevent.weight);
@@ -181,7 +182,7 @@ int main(int argc, char **argv){
             h_topPt.Fill(myevent.topPt, myevent.weight);
             h_top1Pt.Fill(myevent.top1Pt, myevent.weight);
             h_top2Pt.Fill(myevent.top2Pt, myevent.weight);
-            wevents += myevent.weight;
+            
         }
         
    }

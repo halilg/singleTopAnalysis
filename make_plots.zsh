@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
-FNAME=\"$1\"
+IFNAME=$1
+OPATH=plots/`basename $IFNAME`
+mkdir -p $OPATH
 
-mkdir -p plots/$1
-root.exe -l -b -q "make_plots.cc($FNAME)"
+#--------------------------------------------
+fnc=make_plots.cc(\"$IFNAME\", \"$OPATH\")
+root.exe -l -b -q "$fnc"
