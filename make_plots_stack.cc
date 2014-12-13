@@ -1,13 +1,13 @@
 void make_plots_stack(TString dpath, TString hn, TString extension){
 	
-	TFile tfdata("h-TreesEle_Data_2J_0T_noSyst.root");
-	TFile tftch("h-TreesEle_TChannel_2J_0T_noSyst.root");
-	TFile tftwch("h-TreesEle_TWChannel_2J_0T_noSyst.root");
+	TFile tfdata("root/h-TreesEle_Data_2J_0T_noSyst.root");
+	TFile tftch("root/h-TreesEle_TChannel_2J_0T_noSyst.root");
+	TFile tftwch("root/h-TreesEle_TWChannel_2J_0T_noSyst.root");
 	//TFile tfsch();
-	TFile tfqcd("h-TreesEle_QCDEle_2J_0T_noSyst.root");
-	TFile tfwj("h-TreesEle_WJets_2J_0T_noSyst.root");
-	TFile tfzj("h-TreesEle_ZJets_2J_0T_noSyst.root");
-	TFile tftt("h-TreesEle_TTBar_2J_0T_noSyst.root");
+	TFile tfqcd("root/h-TreesEle_QCDEle_2J_0T_noSyst.root");
+	TFile tfwj("root/h-TreesEle_WJets_2J_0T_noSyst.root");
+	TFile tfzj("root/h-TreesEle_ZJets_2J_0T_noSyst.root");
+	TFile tftt("root/h-TreesEle_TTBar_2J_0T_noSyst.root");
 	//TFile tfdb();
 	//TreesEle_ZZ_2J_0T_noSyst.root		TreesEle_WW_2J_0T_noSyst.root		TreesEle_WZ_2J_0T_noSyst.root
 	
@@ -47,12 +47,12 @@ void make_plots_stack(TString dpath, TString hn, TString extension){
 	
 	THStack hs("hs","Stacked 1D histograms");
 	
-	htch->Scale(19700);
+	/*htch->Scale(19700);
 	hwj->Scale(19700);
 	htt->Scale(19700);
 	hzj->Scale(19700);
 	hqcd->Scale(19700);
-	htwch->Scale(19700);
+	htwch->Scale(19700);*/
 	       
 	hs.Add(htch);
 	hs.Add(hwj);
