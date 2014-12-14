@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 datasets=(TChannel TWChannel SbarChannel TTBar WJets ZJets WW WZ ZZ QCDEle Data)
-tags=(2J_0T_noSyst 2J_1T_noSyst 2J_0T_noSyst 3J_1T_noSyst 3J_2T_noSyst)
+tags=(2J_0T_noSyst 2J_1T_noSyst 3J_1T_noSyst 3J_2T_noSyst)
 
 for tag in $tags; do
     echo "@@@@@ tag: $tag"
@@ -17,3 +17,4 @@ echo "@@@@@ Rendering plots"
 for rf in root/h-*.root; do
     ./make_plots.zsh $rf
 done
+./make_plots_stack.zsh

@@ -208,10 +208,10 @@ int main(int argc, char **argv){
     
     Json::StyledWriter writer;
     std::string outputConfig = writer.write( root );
-    stemp=rjfile.Data();
+    stemp=(rjfile.Remove(0,rjfile.Last('/')+1)).Data();
     stemp.ReplaceAll(".json","");
     stemp.ReplaceAll(".root","");
-    stemp = stemp + "-analysis.json";
+    stemp = "results/"+stemp + "-analysis.json";
     std::ofstream out(stemp);
     out << outputConfig << std::endl;
     out.close();
