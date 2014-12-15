@@ -29,7 +29,7 @@ void test_read(){
         while ( getline (myfile,line) ){ inputConfig += line; }
         myfile.close();
     } else {
-      std::cout << "Unable to open file test.json";
+      std::cerr << "Unable to open file test.json";
       return;
     }
     
@@ -37,7 +37,7 @@ void test_read(){
     if ( !parsingSuccessful )
     {
         // report to the user the failure and their locations in the document.
-        std::cout  << "Failed to parse configuration\n"
+        std::cerr  << "Failed to parse configuration\n"
                    << reader.getFormattedErrorMessages();
         return;
     }
