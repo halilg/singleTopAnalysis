@@ -41,7 +41,7 @@ prefix=TreesEle
 [[ $2 != "" ]] && tag=$2
 [[ $3 != "" ]] && prefix=$3
 
-EVENTS=10  # 10 for all events
+EVENTS=-1  # 10 for all events
 RDIR=/ #TreesEle
 RTREE=${dataset}_${tag}
 FROOT_O=root/h-${prefix}_${dataset}_${tag}.root

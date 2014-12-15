@@ -10,7 +10,7 @@ LOTHER= #-lboost_system
 
 default: analysis.exe
 
-all: analysis.exe jsoncpp_cheat.exe
+all: analysis.exe jsoncpp_cheat.exe analyze_yields.exe
 
 jsoncpp.o: jsoncpp.cpp json/json-forwards.h json/json.h
 	$(CPP) -c jsoncpp.cpp $(CPPFLAGS) -o $@
@@ -30,6 +30,15 @@ analysis.o: analysis.h analysis.cc Makefile
 analysis.exe: event.o analysis.o jsoncpp.o json2tchain.o git_ref.h Makefile
 	echo "#define GIT_REF \"`git show-ref refs/heads/master | cut -d " " -f 1 | cut -c 31-40`\"" > git_ref.h
 	$(CPP) analysis.o event.o jsoncpp.o json2tchain.o $(LROOT) -o $@
+
+analyze_yields.o: analyze_yields.cc
+	$(CPP) -c analyze_yields.cc $(CPPFLAGS) -o $@
+
+cfgreader.o: cfgreader.cc cfgreader.h
+	$(CPP) -c cfgreader.cc $(CPPFLAGS) -o $@
+	
+analyze_yields.exe: analyze_yields.o jsoncpp.o cfgreader.o Makefile
+	$(CPP) analyze_yields.o jsoncpp.o cfgreader.o -o $@
 	
 clean:
 	$(RM) *.o *.exe

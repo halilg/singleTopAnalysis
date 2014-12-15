@@ -4,6 +4,9 @@
 #include <vector>
 #include <json/json.h>
 
+// Helper class to access the global analysis configuration.
+// Reads the json configuration file and puts the values into public variables
+
 using namespace std;
 class cfgreader {
   public:
