@@ -5,5 +5,5 @@ class cfgreader {
     cfgreader (std::string);
     std::vector<std::string> datasets;
     std::vector<std::string> categories;
-    std::string jsonpath;
+    std::string json_path;
 };
