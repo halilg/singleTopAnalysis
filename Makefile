@@ -10,7 +10,7 @@ LOTHER= #-lboost_system
 
 default: analysis.exe
 
-all: analysis.exe jsoncpp_cheat.exe analyze_yields.exe
+all: analysis.exe jsoncpp_cheat.exe analyze_yields.exe readcfg.exe
 
 jsoncpp.o: jsoncpp.cpp json/json-forwards.h json/json.h
 	$(CPP) -c jsoncpp.cpp $(CPPFLAGS) -o $@
@@ -37,8 +37,8 @@ analyze_yields.o: analyze_yields.cc
 cfgreader.o: cfgreader.cc cfgreader.h
 	$(CPP) -c cfgreader.cc $(CPPFLAGS) -o $@
 
-cfgreader.exe: cfgreader.o jsoncpp.o
-	$(CPP) cfgreader.o jsoncpp.o -o $@
+readcfg.exe: readcfg.cc cfgreader.o jsoncpp.o
+	$(CPP) $(CPPFLAGS) readcfg.cc cfgreader.o jsoncpp.o -o $@
 	
 analyze_yields.exe: analyze_yields.o jsoncpp.o cfgreader.o Makefile
 	$(CPP) analyze_yields.o jsoncpp.o cfgreader.o -o $@

@@ -1,5 +1,7 @@
 #include <string>
 #include <vector>
+#include <json/json.h>
+
 class cfgreader {
   public:
     cfgreader (std::string);

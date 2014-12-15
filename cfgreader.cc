@@ -6,7 +6,6 @@
 
 // Helper class to access the global analysis configuration.
 // Reads the json configuration file and puts the values into public variables
-// The executable reads the command line argument and prints out the corresponding data in the json file
 
 using namespace std;
 
@@ -60,23 +59,4 @@ cfgreader::cfgreader (string cfgfile){
     if (debug) std::cout << "number of Datasets: " << datasets.size() << endl;
     if (debug) std::cout << "number of categories: " << categories.size() << endl;
     if (debug) std::cout << "json path: " << json_path << endl;    
-}
-
-int main(int argc, char **argv){
-    if (argc == 1){
-        // Tell the user how to run the program
-        std::cerr << "Usage: " << argv[0] << " <tag>" << std::endl;
-        exit(1);
-    }
-    string tag(argv[1]);
-    cfgreader cfg("analysis.cfg");
-    if (cfg.root[tag].isArray()){
-      for (int i = 0; i < cfg.root[tag].size(); i++){
-        cout << cfg.root[tag][i].asString() << " ";
-      }
-      cout << endl;
-    }else{
-      cout << cfg.root[tag].asString() << endl;
-    }
-    
 }
