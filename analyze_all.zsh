@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
-datasets=(TChannel TWChannel SbarChannel TTBar WJets ZJets WW WZ ZZ QCDEle Data)
-tags=(2J_0T_noSyst 2J_1T_noSyst 3J_1T_noSyst 3J_2T_noSyst)
+#datasets=($())
+#categories=$()
 
-for tag in $tags; do
-    echo "@@@@@ tag: $tag"
-    for dst in $datasets; do
+for category in `./readcfg.exe categories`; do
+    echo "@@@@@ category: $category"
+    for dst in `./readcfg.exe datasets`; do
         echo "@@@ $dst"
-        ./go.zsh $dst $tag
+        ./go.zsh $dst $category
         OFCODE=$?
         [[ $OFCODE == 0 ]] || exit
     done
