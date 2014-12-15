@@ -6,4 +6,5 @@ class cfgreader {
     std::vector<std::string> datasets;
     std::vector<std::string> categories;
     std::string json_path;
+    Json::Value root;
 };

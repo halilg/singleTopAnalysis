@@ -36,6 +36,9 @@ analyze_yields.o: analyze_yields.cc
 
 cfgreader.o: cfgreader.cc cfgreader.h
 	$(CPP) -c cfgreader.cc $(CPPFLAGS) -o $@
+
+cfgreader.exe: cfgreader.o jsoncpp.o
+	$(CPP) cfgreader.o jsoncpp.o -o $@
 	
 analyze_yields.exe: analyze_yields.o jsoncpp.o cfgreader.o Makefile
 	$(CPP) analyze_yields.o jsoncpp.o cfgreader.o -o $@
