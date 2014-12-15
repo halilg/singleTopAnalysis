@@ -44,6 +44,15 @@ void test_read(){
     std::cout << "Dataset: " << root["Dataset"]
               << "Cut 1  : " << root["Selection"]["Cut 1"] << std::endl;
     std::cout << root["Selection"]["Cut 1"].asInt() + 10 << "\n";
+    
+    /*if (debug) cout << "json file contains pointers to " << root["rootfiles"].size() << " ROOT files" << endl;
+    for (int i = 0; i<root["rootfiles"].size(); i++) {
+        stemp=root["path"].asString() + "/" + root["rootfiles"][i].asString();
+        cout << "adding to chain: " << stemp << endl;
+        mychain->Add(stemp);
+    }*/
+    
+    
 }
 
 int main(){
