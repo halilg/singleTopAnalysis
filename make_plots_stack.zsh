@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 #-- Configuration -------------------------------------------
-hns=(h_mtwMass h_metPt h_leptonPt h_leptonDeltaCorrectedRelIso h_leptonRhoCorrectedRelIso)
+hns=(h_fJetEta h_mtwMass h_metPt h_leptonPt h_leptonDeltaCorrectedRelIso h_leptonRhoCorrectedRelIso)
 extension=pdf
 dpath=plots/stack/
 
