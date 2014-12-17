@@ -13,6 +13,8 @@
 #include <json2tchain.h>
 #include <git_ref.h>
 
+// Main analyzer. Reads a single ROOT tree, applies cuts, reports cut efficiencies and generates histograms
+
 using namespace std;
 int main(int argc, char **argv){
     Event myevent;
