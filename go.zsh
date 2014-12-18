@@ -59,14 +59,14 @@ fi
 OFCODE=0
 if [[ $1 != "-na" ]]; then
     make -s analysis.exe || exit
-    ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE
+    time ./analysis.exe $EVENTS $FPATH/$FROOT_I $FROOT_O $RDIR $RTREE
     OFCODE=$?
     [[ $OFCODE == 0 ]] || exit $OFCODE
 fi
 
 if [[ $1 == "-p" ]]; then
     mkdir -p plots/$FROOT_O
-    ./make_plots.zsh $FROOT_O
+    ./make_plots.zsh $FROOT_O >> /dev/null
     OFCODE=$?
     [[ $OFCODE == 0 ]] || exit $OFCODE
 fi

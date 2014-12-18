@@ -41,6 +41,7 @@ void Event::register_branches(TTree* myTree){
         myTree->SetBranchAddress("leptonSFB",&leptonSFB);
         myTree->SetBranchAddress("leptonSFC",&leptonSFC);
         myTree->SetBranchAddress("leptonSFD",&leptonSFD);
+        /*
         myTree->SetBranchAddress("leptonSFIDUp",&leptonSFIDUp);
         myTree->SetBranchAddress("leptonSFIDUpB",&leptonSFIDUpB);
         myTree->SetBranchAddress("leptonSFIDUpC",&leptonSFIDUpC);
@@ -65,6 +66,7 @@ void Event::register_branches(TTree* myTree){
         myTree->SetBranchAddress("leptonSFTrigDownB",&leptonSFTrigDownB);
         myTree->SetBranchAddress("leptonSFTrigDownC",&leptonSFTrigDownC);
         myTree->SetBranchAddress("leptonSFTrigDownD",&leptonSFTrigDownD);
+        */
         myTree->SetBranchAddress("fJetPt",&fJetPt);
         myTree->SetBranchAddress("fJetE",&fJetE);
         myTree->SetBranchAddress("fJetEta",&fJetEta);
