@@ -85,11 +85,11 @@ int main(int argc, char **argv){
     //TH1D h_("h_","; PT(GeV); Events", 50, 0, 250); //
     //TH1D h_("h_","; PT(GeV); Events", 50, 0, 250); //
     
-    TH1D h_leptonEta("h_leptonEta","; lepton eta; Events", 50, 0, 6);
-    TH1D h_leptonPhi("h_leptonPhi","; lepton phi; Events", 50, -3.14, 3.14);
+    TH1D h_leptonEta("h_leptonEta","; lepton eta; Events", 30, 0, 6);
+    TH1D h_leptonPhi("h_leptonPhi","; lepton phi; Events", 30, -3.14, 3.14);
     //TH1D h_("h_","; (GeV); Events", 50, 100, 250);
-    TH1D h_fJetEta("h_fJetEta","f Jet eta; eta; Events", 50, 0, 6);
-    TH1D h_bJetEta("h_bJetEta","title;x;y",50,0,6);
+    TH1D h_fJetEta("h_fJetEta","f Jet eta; eta; Events", 30, 0, 6);
+    TH1D h_bJetEta("h_bJetEta","title;x;y",30,0,6);
     TH1D h_mtwMass("h_mtwMass","mtw; W Transverse Mass (GeV); Events", 40, 0, 200);
     TH1D h_Mlb1("h_Mlb1","Mlb1; Mass (GeV); Events", 50, 100, 250);
     TH1D h_Mlb2("h_Mlb2","Mlb2; Mass (GeV); Events", 50, 100, 250);

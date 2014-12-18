@@ -1,1 +1,1 @@
-#define GIT_REF "2777419c34"
+#define GIT_REF "55f6a4a9b7"
