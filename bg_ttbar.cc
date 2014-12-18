@@ -1,12 +1,11 @@
-// cheetsheet and test file for jsoncpp
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <json/json.h>
+#include "TFile.h"
 
 void test_write(){
-    Json::Value root;   // will contain the root value after parsing
+    Json::Value root;   // will contains the root value after parsing
     root["Dataset"] ="ttbar";
     root["isData"] = false;
     root["Events"] = 10000;
@@ -21,7 +20,7 @@ void test_write(){
 }
 
 void test_read(){
-    Json::Value root;   // will contain the root value after parsing
+    Json::Value root;   // will contains the root value after parsing
     Json::Reader reader;
     std::string line, inputConfig;
     std::ifstream myfile ("test.json");
@@ -57,6 +56,6 @@ void test_read(){
 
 int main(){
     //test_write();
-    test_read();
+        
     return 0;
 }

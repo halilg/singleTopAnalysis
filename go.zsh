@@ -66,7 +66,7 @@ fi
 
 if [[ $1 == "-p" ]]; then
     mkdir -p plots/$FROOT_O
-    ./make_plots.zsh $FROOT_O >> /dev/null
+    ./make_plots.zsh $FROOT_O
     OFCODE=$?
     [[ $OFCODE == 0 ]] || exit $OFCODE
 fi
