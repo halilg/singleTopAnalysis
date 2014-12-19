@@ -1,4 +1,6 @@
 // cheetsheet and test file for jsoncpp
+// jsoncpp classs reference:
+// http://jsoncpp.sourceforge.net/class_json_1_1_value.html
 
 #include <iostream>
 #include <fstream>

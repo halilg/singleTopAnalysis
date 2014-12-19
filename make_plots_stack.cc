@@ -1,18 +1,36 @@
-void make_plots_stack(TString dpath, TString hn, TString extension){
-	
-	TFile tfdata("root/h-TreesEle_Data_2J_0T_noSyst.root");
-	TFile tftch("root/h-TreesEle_TChannel_2J_0T_noSyst.root");
-	TFile tftwch("root/h-TreesEle_TWChannel_2J_0T_noSyst.root");
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <TError.h>
+#include <TString.h>
+#include <TFile.h>
+#include <THStack.h>
+#include <TCanvas.h>
+#include <TLegend.h>
+#include <TROOT.h>
+#include <TStyle.h>
+#include <cfgreader.h>
+
+using namespace std;
+void make_plots_stack(TString dpath, TString category, TString hn, TString extension){
+	gErrorIgnoreLevel=2000; // suppress info messages
+	cfgreader cfg("analysis.cfg");
+	TFile tfdata("root/h-TreesEle_Data_"+category+".root");
+	TFile tftch("root/h-TreesEle_TChannel_"+category+".root");
+	TFile tftwch("root/h-TreesEle_TWChannel_"+category+".root");
 	//TFile tfsch();
-	TFile tfqcd("root/h-TreesEle_QCDEle_2J_0T_noSyst.root");
-	TFile tfwj("root/h-TreesEle_WJets_2J_0T_noSyst.root");
-	TFile tfzj("root/h-TreesEle_ZJets_2J_0T_noSyst.root");
-	TFile tftt("root/h-TreesEle_TTBar_2J_0T_noSyst.root");
+	TFile tfqcd("root/h-TreesEle_QCDEle_"+category+".root");
+	TFile tfwj("root/h-TreesEle_WJets_"+category+".root");
+	TFile tfzj("root/h-TreesEle_ZJets_"+category+".root");
+	TFile tftt("root/h-TreesEle_TTBar_"+category+".root");
 	//TFile tfdb();
 	//TreesEle_ZZ_2J_0T_noSyst.root		TreesEle_WW_2J_0T_noSyst.root		TreesEle_WZ_2J_0T_noSyst.root
+
+	// read weights from configuration
+	cout << cfg.root["weights"]["TChannel"][category].asFloat() << endl;
 	
-	
-	cout << "accessing histograms\n";
+	bool debug=false;
+	if (debug) cout << "accessing histograms\n";
 	TH1D* hdata = (TH1D*) tfdata.Get(hn);
 	TH1D* htch = (TH1D*) tftch.Get(hn); 
 	TH1D* htwch = (TH1D*) tftwch.Get(hn); 
@@ -78,7 +96,20 @@ void make_plots_stack(TString dpath, TString hn, TString extension){
 	hs.Draw("SAME");
 	leg.Draw("SAME");
 	//leg.Draw();
-	TString pname = dpath+hn+extension;
-	//cout << "wrot"pname << endl;
+	TString pname = dpath+hn+"."+extension;
 	c.Print(pname);
+	cout << "wrote " << pname << endl;
+}
+
+int main(int argc, char **argv){
+	if (argc < 5){
+        // Tell the user how to run the program
+		std::cerr << "Usage: " << argv[0] << " <dpath> <category> <histogram> <plot file extension>" << std::endl;
+		return 1;
+	}
+	TString dpath(argv[1]);
+	TString category(argv[2]);
+	TString hn(argv[3]);
+	TString extension(argv[4]);
+	make_plots_stack(dpath, category, hn, extension);
 }
