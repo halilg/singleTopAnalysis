@@ -14,8 +14,6 @@ category=2J_0T_noSyst
 
 #------------------------------------------------------------
 for hn in $hns; do 
-    fnc=make_plots_stack.cc(\"$dpath\", \"$category\", \"$hn\", \".$extension\")
-    #root.exe -l -b -q "$fnc"
     make -s make_plots_stack.exe
     ./make_plots_stack.exe $dpath $category $hn $extension
 done
