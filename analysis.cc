@@ -20,7 +20,7 @@ int main(int argc, char **argv){
     Event myevent;
     Json::Value root;   // will contains the root value after parsing
     bool debug;
-    debug=true;
+    debug=false;
     
     if (argc < 6){
         // Tell the user how to run the program
@@ -38,7 +38,7 @@ int main(int argc, char **argv){
     TString stemp;
     treeName=tdir+"/"+ttree;
     TChain * T;
-    bool use_weights=false;
+    bool use_weights=true;
     
     // is the input file a json file?
     if (debug) cout << "will analyze " << rjfile << endl;
@@ -99,11 +99,11 @@ int main(int argc, char **argv){
     TH1I nVertices("h_nVertices"," nVertices ; Vertices ; Events", 51, 0, 50);//("h_","; ; Events", 50, 100, 250);
     TH1I nGoodVertices("h_nGoodVertices"," nGoodVertices ; Vertices ; Events", 51, 0, 50);//("h_","; ; Events", 50, 100, 250);
     
-    cout << "Histograms created\n";
+    if(debug) cout << "Histograms created\n";
     
     // Set branch addresses.   
     myevent.register_branches(myTree);
-    cout << "Branches set\n";
+    if(debug) cout << "Branches set\n";
     
     // determine if electron or muon dataset
     myTree->GetEntry(0);

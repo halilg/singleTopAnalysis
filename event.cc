@@ -439,11 +439,13 @@ void Event::register_branches(TTree* myTree){
         myTree->SetBranchAddress("PDFWeight_GJR_FF",&PDFWeight_GJR_FF);
         myTree->SetBranchAddress("PDFWeight_GJR_FDIS",&PDFWeight_GJR_FDIS);
         myTree->SetBranchAddress("PDFWeight_HERAPDF",&PDFWeight_HERAPDF);
+        /*
         myTree->SetBranchAddress("topPtReweightMCTruthNorm",&topPtReweightMCTruthNorm);
         myTree->SetBranchAddress("topPtReweightNorm",&topPtReweightNorm);
         myTree->SetBranchAddress("topPtReweightMCTruthNormUp",&topPtReweightMCTruthNormUp);
         myTree->SetBranchAddress("topPtReweightNormUp",&topPtReweightNormUp);
         myTree->SetBranchAddress("topPtReweightMCTruthNormDown",&topPtReweightMCTruthNormDown);
         myTree->SetBranchAddress("topPtReweightNormDown",&topPtReweightNormDown);
+        */
    }
 }
