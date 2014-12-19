@@ -27,7 +27,7 @@ void make_plots_stack(TString dpath, TString category, TString hn, TString exten
 	//TreesEle_ZZ_2J_0T_noSyst.root		TreesEle_WW_2J_0T_noSyst.root		TreesEle_WZ_2J_0T_noSyst.root
 
 	// read weights from configuration
-	cout << cfg.root["weights"]["TChannel"][category].asFloat() << endl;
+	//cout << cfg.root["weights"]["TChannel"][category].asFloat() << endl;
 	
 	bool debug=false;
 	if (debug) cout << "accessing histograms\n";
@@ -65,13 +65,14 @@ void make_plots_stack(TString dpath, TString category, TString hn, TString exten
 	
 	THStack hs("hs","Stacked 1D histograms");
 	
-	/*htch->Scale(19700);
-	hwj->Scale(19700);
-	htt->Scale(19700);
-	hzj->Scale(19700);
-	hqcd->Scale(19700);
-	htwch->Scale(19700);*/
-	       
+	htch->Scale(cfg.root["weights"]["TChannel"][category].asFloat());
+	hwj->Scale(cfg.root["weights"]["WJets"][category].asFloat());
+	htt->Scale(cfg.root["weights"]["TTBar"][category].asFloat());
+	hzj->Scale(cfg.root["weights"]["ZJets"][category].asFloat());
+	hqcd->Scale(cfg.root["weights"]["QCDEle"][category].asFloat());
+	htwch->Scale(cfg.root["weights"]["TWChannel"][category].asFloat());
+	hdata->Scale(cfg.root["weights"]["Data"][category].asFloat());
+	
 	hs.Add(htch);
 	hs.Add(hwj);
 	hs.Add(htt);
@@ -96,7 +97,7 @@ void make_plots_stack(TString dpath, TString category, TString hn, TString exten
 	hs.Draw("SAME");
 	leg.Draw("SAME");
 	//leg.Draw();
-	TString pname = dpath+hn+"."+extension;
+	TString pname = dpath+hn+"_"+category+"."+extension;
 	c.Print(pname);
 	cout << "wrote " << pname << endl;
 }

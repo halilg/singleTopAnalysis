@@ -16,8 +16,8 @@ all: analysis.exe jsoncpp_cheat.exe analyze_yields.exe readcfg.exe make_plots_st
 $(ODIR)/jsoncpp.o: jsoncpp.cpp json/json-forwards.h json/json.h
 	$(CPP) -c jsoncpp.cpp $(CPPFLAGS) -o $@
 
-jsoncpp_cheat.exe: jsoncpp_cheat.cc jsoncpp.o
-	$(CPP) jsoncpp_cheat.cc jsoncpp.o $(CPPFLAGS) -o $@
+jsoncpp_cheat.exe: jsoncpp_cheat.cc $(ODIR)/jsoncpp.o
+	$(CPP) jsoncpp_cheat.cc $(ODIR)/jsoncpp.o $(CPPFLAGS) -o $@
 
 $(ODIR)/json2tchain.o: json2tchain.cc json2tchain.h
 	$(CPP) -c json2tchain.cc $(CPPFLAGS) $(CROOT) -o $@
